@@ -13,3 +13,12 @@
     - { role: python }
     - opencv
     - video_processor
+
+- name: setup database server
+  hosts: tag_Name_database
+
+  roles:
+    - mysql
+    - role: DavidWittman.redis
+      redis_bind: 0.0.0.0
+      redis_version: 3.2.0

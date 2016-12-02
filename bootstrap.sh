@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ansible $@ --sudo -m raw -a "apt-get install -y python-simplejson"
+ansible $@ -m raw -a "apt-get update && apt-get install -y python-simplejson"
