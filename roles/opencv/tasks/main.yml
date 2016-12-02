@@ -1,0 +1,51 @@
+---
+
+- name: Install necessary packages
+  apt: name={{ item }}
+  with_items:
+    - build-essential
+    - cmake
+    - git
+    - libgtk2.0-dev
+    - pkg-config
+    - libavcodec-dev
+    - libavformat-dev
+    - libswscale-dev
+    - libtbb2
+    - libtbb-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libtiff-dev
+    - libjasper-dev
+    - libdc1394-22-dev
+    - unzip
+
+- name: Install necessary python packages
+  pip: name={{ item }}
+  with_items:
+    - numpy
+
+- name: Check OpenCV
+  command: ls {{ opencv_install_prefix }}/lib/libopencv_core.so
+  ignore_errors: yes
+  changed_when: no
+  register: check_opencv
+
+- name: Download OpenCV
+  unarchive: src={{ opencv_download_url }} dest={{ opencv_tmp_dir | dirname }} remote_src=yes
+  when: check_opencv | failed
+
+- name: Run OpenCV cmake
+  command: cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX={{ opencv_install_prefix }} -D PYTHON_INCLUDE_DIR={{ python_include_dir }} . chdir={{ opencv_tmp_dir }}
+  when: check_opencv | failed
+
+- name: Build OpenCV
+  command: make -j {{ ansible_processor_cores }} chdir={{ opencv_tmp_dir }}
+  when: check_opencv | failed
+
+- name: Install OpenCV
+  command: make install chdir={{ opencv_tmp_dir }}
+  when: check_opencv | failed
+
+# - name: Clean OpenCV build dir
+#   file: path={{ opencv_tmp_dir }} state=absent

@@ -1,0 +1,27 @@
+---
+
+- name: Enable supervisor
+  service: name=supervisor enabled=yes state=started
+
+# remove next 2 tasks when https://github.com/ansible/ansible-modules-core/issues/3764 is fixed
+- name: Check for systemctl
+  changed_when: no
+  command: which systemctl
+  register: which_systemctl
+  ignore_errors: yes
+
+- name: Enable supervisor with systemd
+  command: systemctl enable supervisor
+  when: which_systemctl | succeeded
+  changed_when: no
+
+- name: Add video_processor config
+  template: src=video_processor.conf dest=/etc/supervisor/conf.d/video_processor.conf
+  register: video_processor_config
+
+- name: Restart supervisor
+  service: name=supervisor state=restarted
+  when: video_processor_config | changed
+
+- name: Start video_processor
+  supervisorctl: name=video_processor state=started

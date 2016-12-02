@@ -1,0 +1,5 @@
+---
+
+username: videalize
+user_home: "/home/{{ username }}"
+env: production

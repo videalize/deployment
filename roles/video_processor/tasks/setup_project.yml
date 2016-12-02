@@ -1,0 +1,17 @@
+---
+
+- name: Fetch project
+  git: repo={{ video_processor_repository }} accept_hostkey=yes dest={{ video_processor_project_dir }} key_file={{ video_processor_keyfile }}
+  become: yes
+  become_user: "{{ username }}"
+  register: video_processor_git_fetch
+
+- name: Install project dependencies
+  pip: requirements={{ video_processor_project_dir }}/requirements.txt
+
+- name: Install project
+  command: "{{ python_bin }} setup.py install chdir={{ video_processor_project_dir }}"
+  # when: video_processor_git_fetch | changed
+
+- name: Add env file
+  template: src=env dest={{ video_processor_project_dir }}/.env owner={{ username }} group={{ username }}

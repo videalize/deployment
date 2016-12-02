@@ -1,0 +1,9 @@
+[defaults]
+inventory = inventory/production
+vault_password_file = $HOME/.ansible/vault_passwords/videalize
+roles_path = ~/.ansible-roles
+remote_user = ubuntu
+
+[privilege_escalation]
+become = True
+become_user = root

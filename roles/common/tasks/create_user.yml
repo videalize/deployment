@@ -1,0 +1,4 @@
+---
+
+- name: Create Videalize user
+  user: name={{ username }} comment="Videalize user"

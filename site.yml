@@ -1,0 +1,15 @@
+---
+
+- name: apply common configuration
+  hosts: all
+
+  roles:
+    - common
+
+- name: setup video processor
+  hosts: tag_Name_video_processor
+
+  roles:
+    - { role: python }
+    - opencv
+    - video_processor

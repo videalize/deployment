@@ -1,0 +1,3 @@
+{% for key, value in video_processor_env.items() %}
+{{ key }}={{ value }}
+{% endfor %}

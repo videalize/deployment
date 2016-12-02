@@ -1,0 +1,6 @@
+---
+
+python_prefix_path: /usr/local
+python_version: 3.5.2
+python_bin: "{{ python_prefix_path }}/bin/python"
+python_include_dir: "{{ python_prefix_path }}/include/python{{ python_version.split('.')[:-1] | join('.') }}m"

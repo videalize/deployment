@@ -1,0 +1,4 @@
+---
+
+opencv_download_url: https://sourceforge.net/projects/opencvlibrary/files/opencv-unix/{{ opencv_version }}/opencv-{{ opencv_version }}.zip/download
+opencv_tmp_dir: /tmp/opencv-{{ opencv_version }}
