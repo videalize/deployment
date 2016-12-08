@@ -1,0 +1,6 @@
+---
+
+- include: prepare_project.yml
+
+- include: nginx.yml
+  tags: nginx

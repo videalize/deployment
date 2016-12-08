@@ -1,0 +1,22 @@
+---
+
+- name: Install nginx
+  apt: name=nginx
+
+- name: Start and enable nginx
+  service: name=nginx state=started enabled=yes
+
+- name: Remove default nginx server
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  register: nginx_default_removed
+
+- name: Add videalize nginx config
+  template: src=videalize.xyz dest=/etc/nginx/sites-available/videalize.xyz
+  register: nginx_config
+
+- name: Activate videalize nginx config
+  file: src=/etc/nginx/sites-available/videalize.xyz dest=/etc/nginx/sites-enabled/videalize.xyz state=link
+
+- name: Reload nginx config
+  service: name=nginx state=reloaded
+  when: nginx_config | changed or nginx_default_removed | changed

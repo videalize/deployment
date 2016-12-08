@@ -1,0 +1,58 @@
+---
+
+- name: Install necessary packages
+  apt: name={{ item }} state=present
+  with_items:
+    - autoconf
+    - bison
+    - build-essential
+    - libssl-dev
+    - libyaml-dev
+    - libreadline6-dev
+    - zlib1g-dev
+    - libncurses5-dev
+    - libffi-dev
+    - libgdbm3
+    - libgdbm-dev
+
+- name: Check ruby installation
+  shell: "{{ ruby_bin }} --version 2>&1"
+  ignore_errors: yes
+  changed_when: no
+  register: ruby_installed_version
+
+- name: Check ruby-build installation
+  command: "/usr/local/bin/ruby-build --version"
+  ignore_errors: yes
+  changed_when: no
+  register: ruby_build
+
+- name: Set installation facts
+  set_fact:
+    ruby_installed: "{{ ruby_installed_version | succeeded and ruby_installed_version.stdout.find(ruby_version) != -1 }}"
+    ruby_build_installed: "{{ ruby_build | succeeded }}"
+
+- name: Clone ruby-build
+  git: repo=https://github.com/rbenv/ruby-build dest=/tmp/ruby-build
+  when: not ruby_installed and not ruby_build_installed
+
+- name: Install ruby-build
+  command: /tmp/ruby-build/install.sh
+  when: not ruby_installed and not ruby_build_installed
+
+- name: Clean ruby-build
+  file: path=/tmp/ruby-build state=absent
+
+- name: Install Ruby
+  command: /usr/local/bin/ruby-build {{ ruby_version }} {{ ruby_prefix_path }}
+  when: not ruby_installed
+
+- name: Check bundler install
+  shell: "{{ ruby_prefix_path }}/bin/gem list | grep bundler"
+  register: bundler_installation
+  ignore_errors: yes
+  changed_when: no
+
+- name: Install bundler
+  command: "{{ ruby_prefix_path }}/bin/gem install bundler"
+  when: bundler_installation | failed

@@ -1,0 +1,14 @@
+---
+
+- name: Install dependencies
+  apt: name=libmysqlclient-dev
+
+- name: Create project directories
+  file: path={{ item }} state=directory owner={{ username }} group={{ username }}
+  with_items:
+    - "{{ project_dir }}"
+    - "{{ project_dir }}/shared"
+    - "{{ project_dir }}/shared/config"
+
+- name: Add application.yml
+  template: src=application.yml dest={{ project_dir }}/shared/config/application.yml owner={{ username }} group={{ username }}

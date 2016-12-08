@@ -10,7 +10,7 @@
   hosts: tag_Name_video_processor
 
   roles:
-    - { role: python }
+    - python
     - opencv
     - video_processor
 
@@ -22,3 +22,11 @@
     - role: DavidWittman.redis
       redis_bind: 0.0.0.0
       redis_version: 3.2.0
+
+- name: setup webapp server
+  hosts: tag_Name_webapp
+
+  roles:
+    - ruby
+    - nodejs
+    - webapp
