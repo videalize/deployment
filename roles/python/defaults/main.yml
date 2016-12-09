@@ -2,5 +2,8 @@
 
 python_prefix_path: /usr/local
 python_version: 3.5.2
+python_short_version: "{{ python_version.split('.')[:-1] | join('.') }}"
 python_bin: "{{ python_prefix_path }}/bin/python"
-python_include_dir: "{{ python_prefix_path }}/include/python{{ python_version.split('.')[:-1] | join('.') }}m"
+python_include_dir: "{{ python_prefix_path }}/include/python{{ python_short_version }}m"
+python_local_dir: "$HOME/python"
+python_local_site_packages: "{{ python_local_dir }}/lib/python{{ python_short_version }}/site-packages"

@@ -10,8 +10,12 @@
   pip: requirements={{ video_processor_project_dir }}/requirements.txt
 
 - name: Install project
-  command: "{{ python_bin }} setup.py install chdir={{ video_processor_project_dir }}"
+  shell: "PYTHONPATH={{ python_local_site_packages }} {{ python_bin }} setup.py install --prefix={{ python_local_dir }}"
+  args:
+    chdir: "{{ video_processor_project_dir }}"
   when: video_processor_git_fetch | changed
+  become: yes
+  become_user: "{{ username }}"
 
 - name: Add env file
   template: src=env dest={{ video_processor_project_dir }}/.env owner={{ username }} group={{ username }}
