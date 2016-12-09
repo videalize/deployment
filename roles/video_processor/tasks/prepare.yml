@@ -4,12 +4,9 @@
   apt: name={{ item }}
   with_items:
     - supervisor
+    - libsndfile1
+    - libsndfile1-dev
 
 - name: Install deploy ssh key
   copy: content="{{ ssh_video_deploy_private_key }}" dest={{ video_processor_keyfile }} mode=0600 owner={{ username }} group={{ username }}
   no_log: true
-
-- name: Create local pythonpath
-  file: path="{{ python_local_site_packages }}" state=directory
-  become: yes
-  become_user: "{{ username }}"

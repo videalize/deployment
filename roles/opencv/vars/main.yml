@@ -2,3 +2,6 @@
 
 opencv_download_url: https://sourceforge.net/projects/opencvlibrary/files/opencv-unix/{{ opencv_version }}/opencv-{{ opencv_version }}.zip/download
 opencv_tmp_dir: /tmp/opencv-{{ opencv_version }}
+
+opencv_python_so: "cv2.cpython-{{ python_short_version.replace('.', '') }}m-x86_64-linux-gnu.so"
+opencv_python_path: "{{ python_prefix_path }}/lib/python{{ python_short_version }}/site-packages/{{ opencv_python_so }}"

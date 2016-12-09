@@ -7,10 +7,19 @@
   register: video_processor_git_fetch
 
 - name: Install project dependencies
-  pip: requirements={{ video_processor_project_dir }}/requirements.txt
+  pip: requirements={{ video_processor_project_dir }}/requirements.txt virtualenv="{{ video_processor_virtualenv }}"
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Install opencv2
+  command: "cp {{ opencv_python_path }} {{ video_processor_virtualenv }}/lib/python{{ python_short_version }}/site-packages"
+  args:
+    creates: "{{ video_processor_virtualenv }}/lib/python{{ python_short_version }}/site-packages/{{ opencv_python_so }}"
+  become: yes
+  become_user: "{{ username }}"
 
 - name: Install project
-  shell: "PYTHONPATH={{ python_local_site_packages }} {{ python_bin }} setup.py install --prefix={{ python_local_dir }}"
+  command: "{{ video_processor_python }} setup.py install"
   args:
     chdir: "{{ video_processor_project_dir }}"
   when: video_processor_git_fetch | changed

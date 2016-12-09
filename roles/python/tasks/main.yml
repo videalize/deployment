@@ -46,5 +46,5 @@
 - name: Upgrade pip
   pip: name=pip state=latest
 
-- name: Add local PYTHONPATH to environment
-  copy: dest=/etc/profile.d/pythonpath.sh content="export PYTHONPATH=\"{{ python_local_site_packages }}\"\n"
+- name: Install virtualenv
+  pip: name=virtualenv
