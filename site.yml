@@ -22,6 +22,7 @@
     - role: DavidWittman.redis
       redis_bind: 0.0.0.0
       redis_version: 3.2.0
+      redis_pidfile: "/var/lib/redis/{{ redis_port }}.pid"
 
 - name: setup webapp server
   hosts: tag_Name_webapp
