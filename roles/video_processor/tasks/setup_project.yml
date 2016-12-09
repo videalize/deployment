@@ -11,7 +11,7 @@
 
 - name: Install project
   command: "{{ python_bin }} setup.py install chdir={{ video_processor_project_dir }}"
-  # when: video_processor_git_fetch | changed
+  when: video_processor_git_fetch | changed
 
 - name: Add env file
   template: src=env dest={{ video_processor_project_dir }}/.env owner={{ username }} group={{ username }}

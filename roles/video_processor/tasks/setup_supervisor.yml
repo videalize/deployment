@@ -25,3 +25,7 @@
 
 - name: Start video_processor
   supervisorctl: name=video_processor state=started
+
+- name: Retart video_processor
+  supervisorctl: name=video_processor state=restarted
+  when: video_processor_git_fetch | changed
