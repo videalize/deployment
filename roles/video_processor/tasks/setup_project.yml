@@ -18,13 +18,21 @@
   become: yes
   become_user: "{{ username }}"
 
+- name: Add env file
+  template: src=env dest={{ video_processor_project_dir }}/.env owner={{ username }} group={{ username }}
+
 - name: Install project
   command: "{{ video_processor_python }} setup.py install"
   args:
     chdir: "{{ video_processor_project_dir }}"
-  when: video_processor_git_fetch | changed
+  when: video_processor_git_fetch | changed and env != 'dev'
   become: yes
   become_user: "{{ username }}"
 
-- name: Add env file
-  template: src=env dest={{ video_processor_project_dir }}/.env owner={{ username }} group={{ username }}
+- name: Setup project for dev
+  command: "{{ video_processor_python }} setup.py develop"
+  args:
+    chdir: "{{ video_processor_project_dir }}"
+  when: video_processor_git_fetch | changed and env == 'dev'
+  become: yes
+  become_user: "{{ username }}"
