@@ -3,6 +3,10 @@
 - name: Ensure ssh_user .ssh directory exists
   file: dest={{ user_home }}/.ssh mode=0700 state=directory owner={{ username }} group={{ username }}
 
-- name: Add public keys to authorized keys
+- name: Add public keys to user authorized keys
   lineinfile: dest={{ user_home }}/.ssh/authorized_keys create=true line="{{ item }}" owner={{ username }} group={{ username }}
   with_items: "{{ public_keys }}"
+
+- name: Add public keys to admin authorized keys
+  lineinfile: dest={{ ansible_env.HOME }}/.ssh/authorized_keys create=true line="{{ item }}"
+  with_items: "{{ admin_keys }}"

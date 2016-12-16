@@ -3,6 +3,7 @@
 video_processor_repository: git@github.com:videalize/video-processor.git
 video_processor_project_dir: "{{ user_home }}/videalize-video-processor"
 video_processor_keyfile: "{{ user_home }}/.ssh/video_processor_deploy"
+video_processor_dev_keyfile: "{{ user_home }}/.ssh/id_rsa"
 video_processor_virtualenv: "{{ video_processor_project_dir }}/venv"
 video_processor_python: "{{ video_processor_virtualenv }}/bin/python"
 
@@ -12,3 +13,5 @@ video_processor_env:
   AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
   AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
   PROJECT_ROOT: "{{ video_processor_project_dir }}"
+  IBM_USERNAME: "{{ ibm_username }}"
+  IBM_PASSWORD: "{{ ibm_password }}"

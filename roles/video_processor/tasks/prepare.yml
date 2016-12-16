@@ -10,3 +10,8 @@
 - name: Install deploy ssh key
   copy: content="{{ ssh_video_deploy_private_key }}" dest={{ video_processor_keyfile }} mode=0600 owner={{ username }} group={{ username }}
   no_log: true
+
+- name: Install dev deploy ssh key
+  copy: content="{{ ssh_video_deploy_dev_private_key }}" dest={{ video_processor_dev_keyfile }} mode=0600 owner={{ username }} group={{ username }}
+  when: env == 'dev'
+  no_log: true
